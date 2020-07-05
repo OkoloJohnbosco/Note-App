@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="logo192.png" />
+    <link rel="stylesheet" href="./css/task.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <title>Todo App</title>
+  </head>
+  <body>
+    <nav class="navbar">
+      <span><img src="img/play-btn.png" alt="logo" />PlayGround</span>
+      <ul>
+        <li>
+          <a href="#" title="Home"><span class="lnr lnr-home"></span></a>
+        </li>
+        <li>
+          <a href="#" title="Developer" id="modal-key"
+            ><span class="lnr lnr-user"></span
+          ></a>
+        </li>
+        <li>
+          <a href="#" title="tasks"
+            ><span class="lnr lnr-file-add"></span
+            ><span class="badge" id="taskNumber">3</span></a
+          >
+        </li>
+        <li></li>
+      </ul>
+    </nav>
+    <header class="header">
+      <h2 class="text-stylish">Ackermann's Note App</h2>
+      <p class="text-mute">
+        To fail to plan is to plan to fail. A stitch in time saves nine
+      </p>
+    </header>
+    <div class="container">
+      <div class="forms">
+        <h3 class="text-stylish">Tasks / Notes</h3>
+        <form id="task-form">
+          <div class="form-group">
+            <input
+              type="text"
+              name="task-name"
+              id="task-name"
+              placeholder="Learn Ruby on rails.."
+            />
+          </div>
+
+          <div class="form-group">
+            <textarea
+              name="task-desc"
+              id="task-desc"
+              rows="5"
+              cols="30"
+              placeholder="I plan to finish my udemy Ruby on rails course...."
+            ></textarea>
+          </div>
+          <button type="submit" class="btn">Submit</button>
+        </form>
+      </div>
+      <div class="tasks">
+        <ul class="task-container"></ul>
+        <!-- Empty State -->
+        <div class="empty-state">
+          <h1 class="demo">
+            <span class="lnr lnr-file-empty"></span> items goes here
+          </h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-modal">
+      <div class="modal">
+        <div class="modal-img">
+          <span id="closeBtn">&times;</span>
+          <img src="img/about (2).jpg" alt="" />
+        </div>
+
+        <div class="modal-body">
+          <h2>Okolo Johnbosco</h2>
+          <p>
+            You will notice a jonzing person before you call me a front-end. I
+            am skilled in HTML, CSS, JavaScript, JQuery,Ruby and I am currently
+            learning Reactjs.
+          </p>
+          <p>
+            I love reading novel particularly fantasy genre, i should probably
+            recommend a few fro you guys viewing this, try
+            <q>Wheel of time</q> by Robert jordan and
+            <q>Stormlight Archive</q> by Brandon Sanderson, gosh!! those books
+            are fire.
+          </p>
+          <ul class="modal-social">
+            <li>
+              <a href="#" class="facebook"><i class="fab fa-facebook"></i></a>
+            </li>
+            <li>
+              <a href="#" class="linkedin"><i class="fab fa-linkedin"></i></a>
+            </li>
+            <li>
+              <a href="#" class="twitter"
+                ><i class="fab fa-twitter-square"></i
+              ></a>
+            </li>
+            <li>
+              <a href="#" class="git"><i class="fab fa-github"></i></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script src="js/all.js"></script>
+    <script src="js/task.js"></script>
+  </body>
+</html>
