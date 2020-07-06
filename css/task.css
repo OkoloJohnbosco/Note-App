@@ -401,6 +401,8 @@ nav.navbar ul li .badge {
 }
 .modal-img img {
   width: 100%;
+  object-fit: contain;
+  object-position: center;
 }
 .modal-body {
   margin-top: 10px;
