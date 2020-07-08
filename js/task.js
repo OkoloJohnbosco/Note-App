@@ -18,27 +18,28 @@ window.addEventListener("DOMContentLoaded", () => {
   const modal = document.querySelector(".modal");
   const mainModel = document.querySelector(".main-modal");
 
+  // Model events
   modalBtn.addEventListener("click", activateModal);
-
   function activateModal(event) {
     mainModel.style.display = "block";
   }
 
+  // Close button
   let closeBtn = document.getElementById("closeBtn");
-
   closeBtn.addEventListener("click", closeModal);
   function closeModal(e) {
     mainModel.style.display = "none";
     modal.style.transition = "all 1s ease";
   }
 
+  // Window close event
   window.addEventListener("click", windowClose);
-
   function windowClose(e) {
     if (e.target == mainModel) {
       mainModel.style.display = "none";
     }
   }
+
   // Update the dom
   function updateTaskDOM({ name, desc, id, date, completed }) {
     updateTaskNumber();
@@ -51,7 +52,7 @@ window.addEventListener("DOMContentLoaded", () => {
             <h4 class="text-stylish strike">${name}</h4>
             <p class="task-btn">
                 <button href="#" class="deleteTask"><span class="lnr lnr-trash"></span></button>
-                <button href="#" class="doneTask"><span class="lnr lnr-pencil"></span></button>
+                <button href="#" class="doneTask"><span class="lnr lnr-spell-check"></span></button>
             </p>
             <p class="text-desc">${desc}</p>
             <p class="task-date">${date}</p>
@@ -76,25 +77,31 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function changeLocal(tasks) {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }
   // Update BADGE NUMBER
   function updateTaskNumber() {
-    if (localStorage.getItem("tasks") == null) {
+    let storedTask = localStorage.getItem("tasks");
+
+    if (storedTask == null) {
       taskNumber.textContent = "0";
     } else {
-      let tasks = JSON.parse(localStorage.getItem("tasks"));
+      let tasks = JSON.parse(storedTask);
       taskNumber.textContent = tasks.length;
     }
   }
   // function to update and check local storage
   function updateStorage(task) {
     let tasks = [];
-    if (localStorage.getItem("tasks") == null) {
+    let storedTask = localStorage.getItem("tasks");
+    if (storedTask == null) {
       tasks.push(task);
-      localStorage.setItem("tasks", JSON.stringify(tasks));
+      changeLocal(tasks);
     } else {
-      let tasks = JSON.parse(localStorage.getItem("tasks"));
+      let tasks = JSON.parse(storedTask);
       tasks.push(task);
-      localStorage.setItem("tasks", JSON.stringify(tasks));
+      changeLocal(tasks);
     }
   }
 
@@ -113,7 +120,7 @@ window.addEventListener("DOMContentLoaded", () => {
       let tasks = JSON.parse(localStorage.getItem("tasks"));
       let newTasks = tasks.filter((task) => task.id != deletedTaskId);
       console.log(newTasks);
-      localStorage.setItem("tasks", JSON.stringify(newTasks));
+      changeLocal(newTasks);
       // Remove The Element
       li.classList.add("fadeOut");
       setTimeout(() => li.remove(), 400);
@@ -136,7 +143,7 @@ window.addEventListener("DOMContentLoaded", () => {
         }
         newTasks.push(task);
       });
-      localStorage.setItem("tasks", JSON.stringify(newTasks));
+      changeLocal(newTasks);
       // Add Shake Animation
       let taskLi = event.target.closest(".task-item");
       taskLi.classList.add("shake");
@@ -173,32 +180,33 @@ window.addEventListener("DOMContentLoaded", () => {
   // Get the date and time
   function getDate(date) {
     let currentDate = date.toLocaleDateString();
-    let currentDay = days[date.getDay()];
-    currentDay = currentDay.slice(0, 3);
-    let currentHour;
-    let timeZone = "pm";
+    let currentDay = days[date.getDay()].slice(0, 3);
+    let currentTime = date.toLocaleTimeString().slice(0, 4);
+    let timeZone = date.toLocaleTimeString().slice(8).toLowerCase();
 
-    if (date.getHours() === 0) {
-      currentHour = 12;
-      timeZone = "am";
-    } else if (date.getHours() > 12) {
-      currentHour = date.getHours() - 12;
-      timeZone = "pm";
-    } else if (date.getHours() < 12) {
-      timeZone = "am";
-      currentHour = date.getHours();
-    } else currentHour = date.getHours();
-    let currentMinute;
-
-    if (String(date.getMinutes()).length === 1) {
-      currentMinute = "0" + String(date.getMinutes());
-    } else {
-      currentMinute = String(date.getMinutes());
-    }
-
-    return `${currentHour}:${currentMinute}${timeZone}, ${currentDay} , ${currentDate}`;
+    return `${currentTime}${timeZone}, ${currentDay} , ${currentDate}`;
   }
 
+  function formatString(string) {
+    let stringArray = string.split(".");
+    let arr = stringArray
+      .map((map) => {
+        let individualString = String(map);
+        let editedFormName;
+        if (individualString[0] == " ") {
+          editedFormName =
+            individualString[1].toUpperCase() +
+            individualString.slice(2).toLowerCase();
+        } else {
+          editedFormName =
+            individualString[0].toUpperCase() +
+            individualString.slice(1).toLowerCase();
+        }
+        return editedFormName;
+      })
+      .join(". ");
+    return arr;
+  }
   // Update Task Event
   const updateTask = (event) => {
     event.preventDefault();
@@ -209,10 +217,8 @@ window.addEventListener("DOMContentLoaded", () => {
       alert("Please fill all available fields");
       return;
     }
-    let editedFormName =
-      formName[0].toUpperCase() + formName.slice(1).toLowerCase();
-    let editedformDesc =
-      formDesc[0].toUpperCase() + formDesc.slice(1).toLowerCase();
+    let editedFormName = formatString(formName);
+    let editedformDesc = formatString(formDesc);
     const task = {
       name: editedFormName,
       desc: editedformDesc,
@@ -241,7 +247,6 @@ window.addEventListener("DOMContentLoaded", () => {
     } else {
       let tasks = JSON.parse(localStorage.getItem("tasks"));
       tasks.forEach((task) => {
-        console.log(task.date);
         updateTaskDOM(task);
       });
     }
